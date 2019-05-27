@@ -5,7 +5,6 @@ import (
 	"github.com/michaelhenkel/apitest/v1"
 	"github.com/michaelhenkel/apitest/v2alpha1"
 )
-//var vnDb = make(map[string]*VirtualNetwork)
 
 type Converter interface{
 	ConvertToInternal()

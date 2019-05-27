@@ -2,9 +2,7 @@ package v2alpha1
 
 import (
         "encoding/json"
-        //"log"
 )
-//var vnDb = make(map[string]VirtualNetwork)
 
 type VirtualNetwork struct {
         Name string `json:"name"`
