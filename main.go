@@ -14,12 +14,12 @@ const(
 	stable = "v1"
 )
 type Resource interface{
-        Create([]byte) interface{}
-        Read([]byte) interface{}
-        List() []interface{}
+        Create([]byte, map[string]interface{}) interface{}
+        Read([]byte, map[string]interface{}) interface{}
+        List(map[string]interface{}) []interface{}
         ConvertToInternal(interface{})
         ConvertToVersion(string) interface{}
-        Write(interface{})
+        Write(interface{}, map[string]interface{})
 }
 var resourceVersionMap = make(map[string]map[string]Resource)
 var resourceMap = make(map[string]Resource)
@@ -43,21 +43,22 @@ func createResourceVersionMap(){
 
 }
 
+var vnDb = make(map[string]interface{})
 func postResource(body []byte, version string, resource string){
 	r := resourceVersionMap[version][resource]
-	object := r.Create(body)
+	object := r.Create(body, vnDb)
 
 	rInternal := resourceVersionMap["internal"][resource]
 	rInternal.ConvertToInternal(object)
 	objectStable := rInternal.ConvertToVersion(stable)
 
 	rStable := resourceVersionMap[stable][resource]
-	rStable.Write(objectStable)
+	rStable.Write(objectStable, vnDb)
 }
 
 func getResource(body []byte, version string, resource string) []byte {
 	rStable := resourceVersionMap[stable][resource]
-	objectStable := rStable.Read(body)
+	objectStable := rStable.Read(body, vnDb)
 
         rInternal := resourceVersionMap["internal"][resource]
         rInternal.ConvertToInternal(objectStable)
@@ -72,7 +73,7 @@ func getResource(body []byte, version string, resource string) []byte {
 
 func listResources(version string, resource string) []byte {
 	rStable := resourceVersionMap[stable][resource]
-	objectStableList := rStable.List()
+	objectStableList := rStable.List(vnDb)
 	var resultList []interface{}
 	for _, objectStable := range(objectStableList){
 		rInternal := resourceVersionMap["internal"][resource]

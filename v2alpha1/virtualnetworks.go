@@ -4,7 +4,7 @@ import (
         "encoding/json"
         //"log"
 )
-var vnDb = make(map[string]VirtualNetwork)
+//var vnDb = make(map[string]VirtualNetwork)
 
 type VirtualNetwork struct {
         Name string `json:"name"`
@@ -12,7 +12,7 @@ type VirtualNetwork struct {
 	Id *int `json:"id,omitempty"`
 }
 
-func (vn *VirtualNetwork) Create(body []byte) interface{} {
+func (vn *VirtualNetwork) Create(body []byte, vnDb map[string]interface{}) interface{} {
         err := json.Unmarshal(body, &vn)
         if err != nil {
                 panic(err)
@@ -24,25 +24,26 @@ func (vn *VirtualNetwork) Create(body []byte) interface{} {
 	return vn
 }
 
-func (vn *VirtualNetwork) Write(object interface{}){
+func (vn *VirtualNetwork) Write(object interface{}, vnDb map[string]interface{}){
 	vn = object.(*VirtualNetwork)
 	vnDb[vn.Name] = *vn
 }
 
-func (vn *VirtualNetwork) Read(body []byte) interface{}{
+func (vn *VirtualNetwork) Read(body []byte, vnDb map[string]interface{}) interface{}{
 	err := json.Unmarshal(body, &vn)
 	if err != nil {
 		panic(err)
 	}
 	vnObject := vnDb[vn.Name]
-        return &vnObject
+        return vnObject
 }
 
-func (vn *VirtualNetwork) List() []interface{} {
+func (vn *VirtualNetwork) List(vnDb map[string]interface{}) []interface{} {
         var objectList []interface{}
         for _, object := range(vnDb){
-                vnObject := vnDb[object.Name]
-                objectList = append(objectList, &vnObject)
+		vnv2alpha1Object := object.(*VirtualNetwork)
+                vnObject := vnDb[vnv2alpha1Object.Name]
+                objectList = append(objectList, vnObject)
         }
         return objectList
 }

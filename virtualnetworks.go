@@ -5,7 +5,7 @@ import (
 	"github.com/michaelhenkel/apitest/v1"
 	"github.com/michaelhenkel/apitest/v2alpha1"
 )
-var vnDb = make(map[string]*VirtualNetwork)
+//var vnDb = make(map[string]*VirtualNetwork)
 
 type Converter interface{
 	ConvertToInternal()
@@ -17,7 +17,7 @@ type VirtualNetwork struct {
 	Id *int `json:"id,omitempty"`
 }
 
-func (vn *VirtualNetwork) Create(body []byte) interface{}{
+func (vn *VirtualNetwork) Create(body []byte, vnDb map[string]interface{}) interface{}{
 	err := json.Unmarshal(body, &vn)
 	if err != nil {
 		panic(err)
@@ -25,14 +25,14 @@ func (vn *VirtualNetwork) Create(body []byte) interface{}{
 	return vn
 }
 
-func (vn *VirtualNetwork) Write(interface{}){
+func (vn *VirtualNetwork) Write(interface{}, map[string]interface{}){
 }
 
-func (vn *VirtualNetwork) List() []interface{} {
+func (vn *VirtualNetwork) List(map[string]interface{}) []interface{} {
 	return nil
 }
 
-func (vn *VirtualNetwork) Read([]byte) interface{} {
+func (vn *VirtualNetwork) Read([]byte, map[string]interface{}) interface{} {
 	return nil
 }
 
