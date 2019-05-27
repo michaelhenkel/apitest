@@ -42,9 +42,8 @@ func (vn *VirtualNetwork) ConvertToVersion(version string) interface{} {
 	switch version{
 	case "v1":
 		var v1subnets []*v1.Subnet
-		var v1sn v1.Subnet
 		for _, sn := range(vn.Subnets){
-			v1sn = v1.Subnet{
+			v1sn := v1.Subnet{
 				Prefix: sn.Prefix,
 				PrefixLength: sn.PrefixLength,
 			}
@@ -59,9 +58,8 @@ func (vn *VirtualNetwork) ConvertToVersion(version string) interface{} {
 		return vnv1
 	case "v2alpha1":
 		var v2alpha1subnets []*v2alpha1.Subnet
-		var v2alpha1sn v2alpha1.Subnet
 		for _, sn := range(vn.Subnets){
-			v2alpha1sn = v2alpha1.Subnet{
+			v2alpha1sn := v2alpha1.Subnet{
 				Prefix: sn.Prefix,
 				PrefixLength: sn.PrefixLength,
 			}
@@ -89,9 +87,8 @@ func (vn *VirtualNetwork) ConvertToInternal(vnObject interface{}){
 			}}
 		}
 		if vnv1.Subnets != nil {
-			var sn Subnet
 			for _, v1sn := range(vnv1.Subnets){
-				sn = Subnet{
+				sn := Subnet{
 					Prefix: v1sn.Prefix,
 					PrefixLength: v1sn.PrefixLength,
 				}
@@ -105,13 +102,13 @@ func (vn *VirtualNetwork) ConvertToInternal(vnObject interface{}){
 		vnv2alpha1 := vnObject.(*v2alpha1.VirtualNetwork)
 		var subnets []*Subnet
 		if vnv2alpha1.Subnets != nil {
-			var sn Subnet
 			for _, v2alpha1sn := range(vnv2alpha1.Subnets){
-				sn = Subnet{
+				sn := Subnet{
 					Prefix: v2alpha1sn.Prefix,
 					PrefixLength: v2alpha1sn.PrefixLength,
 				}
 				subnets = append(subnets, &sn)
+				log.Println("subnets: ", subnets)
 			}
 		}
 		vn.Subnets = subnets
