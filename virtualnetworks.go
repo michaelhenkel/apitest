@@ -2,7 +2,6 @@ package main
 
 import (
         "encoding/json"
-        "log"
 	"github.com/michaelhenkel/apitest/v1"
 	"github.com/michaelhenkel/apitest/v2alpha1"
 )
@@ -19,7 +18,6 @@ type VirtualNetwork struct {
 }
 
 func (vn *VirtualNetwork) Create(body []byte) interface{}{
-	log.Println(body)
 	err := json.Unmarshal(body, &vn)
 	if err != nil {
 		panic(err)
@@ -108,7 +106,6 @@ func (vn *VirtualNetwork) ConvertToInternal(vnObject interface{}){
 					PrefixLength: v2alpha1sn.PrefixLength,
 				}
 				subnets = append(subnets, &sn)
-				log.Println("subnets: ", subnets)
 			}
 		}
 		vn.Subnets = subnets

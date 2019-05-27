@@ -73,7 +73,6 @@ func getResource(body []byte, version string, resource string) []byte {
 func listResources(version string, resource string) []byte {
 	rStable := resourceVersionMap[stable][resource]
 	objectStableList := rStable.List()
-	log.Println("stable object list: ", objectStableList)
 	var resultList []interface{}
 	for _, objectStable := range(objectStableList){
 		rInternal := resourceVersionMap["internal"][resource]
