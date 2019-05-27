@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"strings"
 	"encoding/json"
-	"apitest/v1"
-	"apitest/v2alpha1"
+	"github.com/michaelhenkel/apitest/v1"
+	"github.com/michaelhenkel/apitest/v2alpha1"
 )
 
 const(
@@ -73,6 +73,7 @@ func getResource(body []byte, version string, resource string) []byte {
 func listResources(version string, resource string) []byte {
 	rStable := resourceVersionMap[stable][resource]
 	objectStableList := rStable.List()
+	log.Println("stable object list: ", objectStableList)
 	var resultList []interface{}
 	for _, objectStable := range(objectStableList){
 		rInternal := resourceVersionMap["internal"][resource]

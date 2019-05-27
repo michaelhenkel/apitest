@@ -41,7 +41,8 @@ func (vn *VirtualNetwork) Read(body []byte) interface{} {
 func (vn *VirtualNetwork) List() []interface{} {
 	var objectList []interface{}
 	for _, object := range(vnDb){
-		objectList = append(objectList, &object)
+		vnObject := vnDb[object.Name]
+		objectList = append(objectList, &vnObject)
 	}
 	return objectList
 }
